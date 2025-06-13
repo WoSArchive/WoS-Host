@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Worlds Index</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #72ff72;
+      text-align: center;
+    }
+
+    .world-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .world {
+      background: #1d1d1d;
+      border: 1px solid #333;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .world-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .world-title {
+      font-size: 20px;
+      color: #bb86fc;
+      margin: 0;
+      flex: 2;
+    }
+
+    .world-meta {
+      font-size: 14px;
+      color: #aaa;
+      flex: 3;
+      text-align: center;
+    }
+
+    .world-download {
+      flex: 1;
+      text-align: right;
+    }
+
+    .download-link {
+      color: #72ff72;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+      .world-row {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      .world-meta, .world-download {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  {% include "navbar.html" %}
+
+  <div class="container">
+    <h1>Available Worlds</h1>
+    <div id="world-list" class="world-list">
+      <!-- Worlds will be injected here -->
+    </div>
+  </div>
+
+  <script>
+    fetch("/api/worlds/")
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById("world-list");
+        data.forEach(world => {
+          const el = document.createElement("div");
+          el.className = "world";
+          el.innerHTML = `
+            <div class="world-row">
+              <div class="world-title">${world.world_name} v${world.version}</div>
+              <div class="world-meta">Dev: ${world.dev_name} | Last Updated: ${world.last_updated || "N/A"}</div>
+              <div class="world-download">
+                <a href="${world.download_url}" class="download-link" target="_blank">Download</a>
+              </div>
+            </div>
+          `;
+          list.appendChild(el);
+        });
+      })
+      .catch(err => {
+        console.error("Failed to load worlds:", err);
+        document.getElementById("world-list").innerHTML = "<p>Error loading world list.</p>";
+      });
+  </script>
+</body>
+</html>

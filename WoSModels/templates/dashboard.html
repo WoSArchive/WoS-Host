@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .card {
+      background-color: #1f1f1f;
+      border: 1px solid #333;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      margin: 40px auto;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #72ff72;
+      font-weight: 600;
+    }
+
+    .slot-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .slot {
+      background: linear-gradient(135deg, #292929, #232323);
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      border: 1px solid #333;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .slot:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .slot strong {
+      color: #bb86fc;
+      font-size: 18px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .slot .meta {
+      font-size: 13px;
+      color: #aaa;
+      margin: 4px 0;
+    }
+
+    .slot .meta a {
+      color: #72ff72;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .slot .meta a:hover {
+      color: #90ff90;
+      text-decoration: underline;
+    }
+
+    .slot-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .button {
+      padding: 10px 18px;
+      background-color: #3a3a3a;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .button:hover {
+      background-color: #4a4a4a;
+      transform: translateY(-1px);
+    }
+
+    .button.delete {
+      background-color: #8b0000;
+    }
+
+    .button.delete:hover {
+      background-color: #a00000;
+    }
+
+    .button.primary {
+      background-color: #6a4c93;
+    }
+
+    .button.primary:hover {
+      background-color: #7a5ca3;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: #1c1c1c;
+      padding: 32px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      border: 1px solid #333;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin: 0 0 24px 0;
+      font-size: 22px;
+      color: #bb86fc;
+      text-align: center;
+    }
+
+    .close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 24px;
+      color: #888;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      line-height: 1;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #ccc;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="url"],
+    .modal-content input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      background: #111;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    .modal-content input:focus {
+      outline: none;
+      border-color: #bb86fc;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #252525;
+      border-radius: 6px;
+    }
+
+    .radio-group input[type="radio"] {
+      margin-right: 6px;
+    }
+
+    .radio-group label {
+      margin: 0;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .modal-content .button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      margin-top: 24px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  {% include "navbar.html" %}
+
+  <div class="card">
+    <div class="header-row">
+      <h1>Welcome, {{ request.user.username }}</h1>
+    </div>
+
+    <p>You are a verified creator.<br>Slots used: {{ slots|length }} / {{ profile.max_world_slots }}</p>
+
+    {% if slots|length < profile.max_world_slots %}
+      <button class="button primary" onclick="openModal('new-slot-modal')">Upload New World</button>
+    {% else %}
+      <p><em>You've used all your available upload slots.</em></p>
+    {% endif %}
+
+    <div class="slot-list">
+      {% for slot in slots %}
+        <div class="slot">
+          <strong>{{ slot.world_name }}</strong>
+          <div class="meta">Version: {{ slot.version }}</div>
+          <div class="meta">Dev: {{ slot.dev_name }}</div>
+          <div class="meta">Last Updated: {{ slot.last_updated|default:slot.uploaded_at }}</div>
+          <div class="meta">
+            {% if slot.self_hosted_url %}
+              <a href="{{ slot.self_hosted_url }}" target="_blank">External World Link</a>
+            {% else %}
+              <a href="{% url 'serve_world_zip' slot.download_slug %}" target="_blank">Download ZIP</a>
+            {% endif %}
+          </div>
+
+          <div class="slot-actions">
+            <button class="button" onclick="openModal('modal-{{ slot.id }}')">Upload / Replace</button>
+            <form method="post" action="{% url 'delete_slot_zip' slot.id %}" onsubmit="return confirm('Are you sure you want to delete this upload?');">
+              {% csrf_token %}
+              <button type="submit" class="button delete">Delete Upload</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="modal" id="modal-{{ slot.id }}">
+          <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-{{ slot.id }}')">&times;</span>
+            <h2>Update: {{ slot.world_name }}</h2>
+            <form method="post" action="{% url 'upload_to_slot' slot.id %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group">
+                <label>World Name</label>
+                <input type="text" name="world_name" value="{{ slot.world_name }}" required>
+              </div>
+              <div class="form-group">
+                <label>Version</label>
+                <input type="text" name="version" value="{{ slot.version }}" required>
+              </div>
+              <div class="form-group">
+                <label>Dev Name</label>
+                <input type="text" name="dev_name" value="{{ slot.dev_name }}">
+              </div>
+              <div class="form-group">
+                <label>Last Updated (optional)</label>
+                <input type="text" name="last_updated" value="{{ slot.last_updated }}">
+              </div>
+
+              <div class="radio-group">
+                <label><input type="radio" name="upload_type_{{ slot.id }}" id="zip_radio_{{ slot.id }}" value="zip" checked onchange="toggleUploadMode('{{ slot.id }}')">Upload ZIP</label>
+                <label><input type="radio" name="upload_type_{{ slot.id }}" id="external_radio_{{ slot.id }}" value="external" onchange="toggleUploadMode('{{ slot.id }}')">External URL</label>
+              </div>
+
+              <div id="zip_input_{{ slot.id }}" class="form-group">
+                <label>ZIP File</label>
+                <input type="file" name="zip_file" accept=".zip">
+              </div>
+
+              <div id="url_input_{{ slot.id }}" class="form-group hidden">
+                <label>External URL</label>
+                <input type="url" name="external_url" placeholder="https://example.com/world.zip">
+              </div>
+
+              <button type="submit" class="button primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="modal" id="new-slot-modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('new-slot-modal')">&times;</span>
+        <h2>Create New World</h2>
+        <form method="post" action="{% url 'create_slot' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>World Name</label>
+            <input type="text" name="world_name" required>
+          </div>
+          <div class="form-group">
+            <label>Version</label>
+            <input type="text" name="version" required>
+          </div>
+          <div class="form-group">
+            <label>Dev Name</label>
+            <input type="text" name="dev_name">
+          </div>
+          <div class="form-group">
+            <label>Last Updated (optional)</label>
+            <input type="text" name="last_updated" placeholder="YYYY-MM-DD or any string">
+          </div>
+
+          <div class="radio-group">
+            <label><input type="radio" name="upload_type_new" id="zip_radio_new" value="zip" checked onchange="toggleUploadMode('new')">Upload ZIP</label>
+            <label><input type="radio" name="upload_type_new" id="external_radio_new" value="external" onchange="toggleUploadMode('new')">External URL</label>
+          </div>
+
+          <div id="zip_input_new" class="form-group">
+            <label>ZIP File</label>
+            <input type="file" name="zip_file" accept=".zip">
+          </div>
+
+          <div id="url_input_new" class="form-group hidden">
+            <label>External URL</label>
+            <input type="url" name="external_url" placeholder="https://example.com/world.zip">
+          </div>
+
+          <button type="submit" class="button primary">Upload World</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function toggleUploadMode(suffix) {
+      const zipRadio = document.getElementById(`zip_radio_${suffix}`);
+      const zipInput = document.getElementById(`zip_input_${suffix}`);
+      const urlInput = document.getElementById(`url_input_${suffix}`);
+
+      if (zipRadio && zipInput && urlInput) {
+        const isZip = zipRadio.checked;
+        zipInput.classList.toggle('hidden', !isZip);
+        urlInput.classList.toggle('hidden', isZip);
+      }
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+        document.body.style.overflow = '';
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</body>
+</html>
