@@ -1,0 +1,205 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dashboard.mobile.css' %}">
+</head>
+<body>
+  {% include "navbar.html" %}
+  
+  <div class="dashboard-container">
+    <div class="header-section">
+      <div class="welcome-content">
+        <div class="welcome-text">
+          <h1>Welcome, {{ request.user.username }}</h1>
+          <p class="subtitle">Manage your world uploads and track your content</p>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-number">{{ slots|length }}</span>
+              <span class="stat-label">Uploaded Worlds</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">{{ profile.max_world_slots }}</span>
+              <span class="stat-label">Max Slots</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="quick-actions">
+          {% if slots|length < profile.max_world_slots %}
+            <button class="button primary" onclick="openModal('new-slot-modal')">
+              <i class="fas fa-plus"></i> Upload New World
+            </button>
+          {% else %}
+            <div class="button" style="opacity: 0.5; cursor: not-allowed;">
+              <i class="fas fa-lock"></i> All Slots Used
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if slots %}
+      <div class="slot-list">
+        {% for slot in slots %}
+          <div class="slot">
+            <div class="slot-header">
+              <h3 class="slot-title">{{ slot.world_name }}</h3>
+              <span class="slot-status">Active</span>
+            </div>
+            
+            <div class="slot-meta">
+              <div class="meta-item">
+                <span class="meta-label">Version</span>
+                <span class="meta-value">{{ slot.version }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Developer</span>
+                <span class="meta-value">{{ slot.dev_name|default:"Unknown" }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Last Updated</span>
+                <span class="meta-value">{{ slot.last_updated|default:slot.uploaded_at }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Download</span>
+                <span class="meta-value">
+                  {% if slot.self_hosted_url %}
+                    <a href="{{ slot.self_hosted_url }}" target="_blank">
+                      <i class="fas fa-external-link-alt"></i> External Link
+                    </a>
+                  {% else %}
+                    <a href="{% url 'serve_world_zip' slot.download_slug %}" target="_blank">
+                      <i class="fas fa-download"></i> Download ZIP
+                    </a>
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+
+            <div class="slot-actions">
+              <button class="button" onclick="openModal('modal-{{ slot.id }}')">
+                <i class="fas fa-edit"></i> Update
+              </button>
+              <form method="post" action="{% url 'delete_slot_zip' slot.id %}" onsubmit="return confirm('Are you sure you want to delete this upload?');" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="button delete">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Update Modal -->
+          <div class="modal" id="modal-{{ slot.id }}">
+            <div class="modal-content">
+              <span class="close" onclick="closeModal('modal-{{ slot.id }}')">&times;</span>
+              <h2>Update: {{ slot.world_name }}</h2>
+              <form method="post" action="{% url 'upload_to_slot' slot.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label>World Name</label>
+                  <input type="text" name="world_name" value="{{ slot.world_name }}" required>
+                </div>
+                <div class="form-group">
+                  <label>Version</label>
+                  <input type="text" name="version" value="{{ slot.version }}" required>
+                </div>
+                <div class="form-group">
+                  <label>Developer Name</label>
+                  <input type="text" name="dev_name" value="{{ slot.dev_name }}">
+                </div>
+                <div class="form-group">
+                  <label>Last Updated (optional)</label>
+                  <input type="date" name="last_updated" value="{{ slot.last_updated }}">
+                </div>
+
+                <div class="radio-group">
+                  <label><input type="radio" name="upload_type_{{ slot.id }}" id="zip_radio_{{ slot.id }}" value="zip" checked onchange="toggleUploadMode('{{ slot.id }}')">Upload ZIP</label>
+                  <label><input type="radio" name="upload_type_{{ slot.id }}" id="external_radio_{{ slot.id }}" value="external" onchange="toggleUploadMode('{{ slot.id }}')">External URL</label>
+                </div>
+
+                <div id="zip_input_{{ slot.id }}" class="form-group">
+                  <label>ZIP File</label>
+                  <input type="file" name="zip_file" accept=".zip">
+                </div>
+
+                <div id="url_input_{{ slot.id }}" class="form-group hidden">
+                  <label>External URL</label>
+                  <input type="url" name="external_url" placeholder="https://example.com/world.zip">
+                </div>
+
+                <button type="submit" class="button primary">
+                  Save Changes
+                </button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-globe"></i>
+        <h3>No worlds uploaded yet</h3>
+        <p>Start by uploading your first world to get started</p>
+      </div>
+    {% endif %}
+
+    <!-- New Slot Modal -->
+    <div class="modal" id="new-slot-modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('new-slot-modal')">&times;</span>
+        <h2>Create New World</h2>
+        <form method="post" action="{% url 'create_slot' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>World Name</label>
+            <input type="text" name="world_name" required placeholder="Enter world name">
+          </div>
+          <div class="form-group">
+            <label>Version</label>
+            <input type="text" name="version" required placeholder="e.g., 1.0.0">
+          </div>
+          <div class="form-group">
+            <label>Developer Name</label>
+            <input type="text" name="dev_name" placeholder="Your dev name or username">
+          </div>
+          <div class="form-group">
+            <label>Last Updated (optional)</label>
+            <input type="date" name="last_updated">
+          </div>
+
+          <div class="radio-group">
+            <label><input type="radio" name="upload_type_new" id="zip_radio_new" value="zip" checked onchange="toggleUploadMode('new')">Upload ZIP</label>
+            <label><input type="radio" name="upload_type_new" id="external_radio_new" value="external" onchange="toggleUploadMode('new')">External URL</label>
+          </div>
+
+          <div id="zip_input_new" class="form-group">
+            <label>ZIP File</label>
+            <input type="file" name="zip_file" accept=".zip">
+          </div>
+
+          <div id="url_input_new" class="form-group hidden">
+            <label>External URL</label>
+            <input type="url" name="external_url" placeholder="https://example.com/world.zip">
+          </div>
+
+          <button type="submit" class="button primary">
+            Upload World
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

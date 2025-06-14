@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Unverified</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-MFmjHW0RM6Z2qKUNN8+Sx7AGxwtxVZk+qXzY1+/nVr1I0P1LMzUT6cwHx+zW62eFxqqfZx8bSmFQdyfFz38F7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card {
+      background-color: #1f1f1f;
+      border: 1px solid #333;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      margin-top: 40px;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      color: #ff6b6b;
+      font-size: 22px;
+    }
+
+    p {
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .username {
+      color: #bb86fc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  {% include "navbar.html" %}
+
+  <div class="card">
+    <div class="header-row">
+      <h1>You are not a verified creator</h1>
+    </div>
+
+    <p>Welcome, <span class="username">{{ request.user.username }}</span>.</p>
+    <p>You currently do not have upload access. Please contact an admin if you believe this is a mistake.</p>
+  </div>
+</body>
+</html>

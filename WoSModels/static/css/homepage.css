@@ -1,0 +1,61 @@
+body {
+  background-color: #111;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  /* These ensure same behavior as original inline CSS */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.welcome-card {
+  background-color: rgba(15, 15, 15, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.welcome-title {
+  color: #fff;
+  font-size: 36px;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.welcome-text {
+  color: #ddd;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.footer {
+  background-color: rgba(15, 15, 15, 0.85);
+  backdrop-filter: blur(5px);
+  padding: 16px 0;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}

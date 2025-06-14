@@ -1,0 +1,130 @@
+/* Mobile and Tablet Responsive Styles */
+
+@media (max-width: 900px) {
+  .world-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    text-align: left;
+  }
+
+  .world-download {
+    text-align: left;
+  }
+
+  .world-meta {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 16px;
+  }
+
+  .header-section {
+    padding: 24px;
+  }
+
+  .header-section h1 {
+    font-size: 28px;
+  }
+
+  .stats-bar {
+    text-align: center;
+  }
+
+  .world {
+    padding: 16px;
+  }
+
+  .world-title {
+    font-size: 18px;
+  }
+
+  .world-meta {
+    gap: 8px;
+  }
+
+  .meta-value {
+    font-size: 13px;
+  }
+
+  .download-link {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  .header-section {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .header-section h1 {
+    font-size: 24px;
+  }
+
+  .header-subtitle {
+    font-size: 16px;
+  }
+
+  .world {
+    padding: 12px;
+  }
+
+  .world-row {
+    gap: 12px;
+  }
+
+  .world-title {
+    font-size: 16px;
+  }
+
+  .world-version {
+    font-size: 12px;
+    padding: 3px 6px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+  }
+
+  .meta-value {
+    font-size: 12px;
+  }
+
+  .download-link {
+    padding: 8px 12px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .world-count {
+    font-size: 14px;
+  }
+
+  .loading-spinner {
+    padding: 30px;
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+  }
+
+  .error-message {
+    padding: 30px 20px;
+    font-size: 14px;
+  }
+
+  .error-message i {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+}

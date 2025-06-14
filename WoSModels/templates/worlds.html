@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Worlds Index</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{% static 'css/worlds.css' %}">
+  <link rel="stylesheet" href="{% static 'css/worlds.mobile.css' %}">
+</head>
+<body>
+  {% include "navbar.html" %}
+
+  <div class="container">
+    <div class="header-section">
+      <h1>Available Worlds</h1>
+      <p class="header-subtitle">Discover and download amazing worlds created by our community</p>
+    </div>
+
+    <div class="stats-bar">
+      <div class="world-count">
+        Showing <span class="count" id="world-count">0</span> worlds
+      </div>
+    </div>
+
+    <div class="loading-spinner" id="loading">
+      <div class="spinner"></div>
+    </div>
+
+    <div id="world-list" class="world-list">
+      <!-- Worlds will be populated here -->
+    </div>
+  </div>
+
+  <script src="{% static 'js/worlds.js' %}"></script>
+</body>
+</html>

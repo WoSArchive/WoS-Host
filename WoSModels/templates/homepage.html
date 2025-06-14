@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Well of Souls | Home</title>
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Base and mobile styles -->
+  <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+  <link rel="stylesheet" href="{% static 'css/homepage.mobile.css' %}" media="only screen and (max-width: 768px)">
+</head>
+<body>
+  <div class="container" style="background-image: url('{{ bg_image_url }}')">
+    {% include "navbar.html" %}
+
+    <main class="main-content">
+      <div class="welcome-card">
+        <h1 class="welcome-title">Well of Souls</h1>
+        <p class="welcome-text">Welcome to the Well of Souls, created by Demi. A collection of worlds, stories, and creative projects.</p>
+        <p class="welcome-text">There's not much here right now, but that will change over time.</p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>© 2025 DeadDreamers | Created by Demi</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Sign Up</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #1c1c1c;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      color: #bb86fc;
+    }
+
+    .form-toggle {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .form-toggle button {
+      flex: 1;
+      padding: 10px;
+      background: #2a2a2a;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 6px 6px 0 0;
+      transition: background 0.3s;
+    }
+
+    .form-toggle button.active {
+      background: #bb86fc;
+    }
+
+    form {
+      display: none;
+    }
+
+    form.active {
+      display: block;
+    }
+
+    form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      background: #111;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 4px;
+    }
+
+    form label {
+      font-size: 14px;
+    }
+
+    form button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background: #bb86fc;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome</h1>
+
+    <div class="form-toggle">
+      <button id="loginBtn" class="active" onclick="showForm('login')">Login</button>
+      <button id="signupBtn" onclick="showForm('signup')">Sign Up</button>
+    </div>
+
+    <form id="loginForm" method="post" action="{% url 'login' %}" class="active">
+      {% csrf_token %}
+      {{ login_form.as_p }}
+      <button type="submit">Login</button>
+    </form>
+
+    <form id="signupForm" method="post" action="{% url 'signup' %}">
+      {% csrf_token %}
+      {{ signup_form.as_p }}
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <script>
+    function showForm(mode) {
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const loginBtn = document.getElementById('loginBtn');
+      const signupBtn = document.getElementById('signupBtn');
+
+      if (mode === 'login') {
+        loginForm.classList.add('active');
+        signupForm.classList.remove('active');
+        loginBtn.classList.add('active');
+        signupBtn.classList.remove('active');
+      } else {
+        loginForm.classList.remove('active');
+        signupForm.classList.add('active');
+        loginBtn.classList.remove('active');
+        signupBtn.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

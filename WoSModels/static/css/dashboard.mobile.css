@@ -1,0 +1,287 @@
+/* Mobile-specific styles for dashboard */
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  /* Header adjustments */
+  .header-section {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .welcome-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .welcome-text h1 {
+    font-size: 24px;
+  }
+
+  .welcome-text .subtitle {
+    font-size: 14px;
+  }
+
+  /* Stats grid mobile layout */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  /* Quick actions mobile */
+  .quick-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .button.primary {
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+
+  /* Slot list mobile layout */
+  .slot-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .slot {
+    padding: 16px;
+  }
+
+  .slot-header {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .slot-title {
+    font-size: 18px;
+  }
+
+  .slot-status {
+    align-self: flex-start;
+  }
+
+  /* Slot meta mobile layout */
+  .slot-meta {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+  }
+
+  .meta-value {
+    font-size: 13px;
+  }
+
+  /* Slot actions mobile */
+  .slot-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .slot-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .slot-actions form {
+    width: 100%;
+  }
+
+  /* Modal mobile adjustments */
+  .modal {
+    padding: 10px;
+  }
+
+  .modal-content {
+    padding: 24px;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 12px;
+    max-height: 95vh;
+  }
+
+  .modal-content h2 {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+
+  .close {
+    top: 16px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    font-size: 20px;
+  }
+
+  /* Form adjustments */
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .modal-content label {
+    font-size: 12px;
+  }
+
+  .modal-content input[type="text"],
+  .modal-content input[type="url"],
+  .modal-content input[type="file"],
+  .modal-content input[type="date"] {
+    padding: 12px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .radio-group {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .radio-group label {
+    font-size: 13px;
+  }
+
+  .modal-content .button {
+    padding: 14px;
+    font-size: 14px;
+    margin-top: 24px;
+  }
+
+  /* Empty state mobile */
+  .empty-state {
+    padding: 40px 20px;
+  }
+
+  .empty-state i {
+    font-size: 36px;
+  }
+
+  .empty-state h3 {
+    font-size: 18px;
+  }
+
+  .empty-state p {
+    font-size: 14px;
+  }
+}
+
+/* Small mobile breakpoint */
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 8px;
+  }
+
+  .header-section {
+    padding: 16px;
+  }
+
+  .welcome-text h1 {
+    font-size: 20px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .slot {
+    padding: 12px;
+  }
+
+  .slot-title {
+    font-size: 16px;
+  }
+
+  .slot-meta {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .modal-content {
+    padding: 16px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .close {
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .header-section {
+    padding: 16px;
+  }
+
+  .welcome-content {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .slot-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modal-content {
+    max-height: 85vh;
+  }
+}
+
+/* Touch-friendly adjustments */
+@media (hover: none) and (pointer: coarse) {
+  .button {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+
+  .button.primary {
+    min-height: 48px;
+    padding: 14px 20px;
+  }
+
+  .close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .stat-card {
+    padding: 16px;
+    min-height: 80px;
+  }
+
+  .radio-group label {
+    min-height: 44px;
+    padding: 8px;
+  }
+}
